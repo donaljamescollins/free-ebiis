@@ -1,4 +1,5 @@
 import urllib.request
+import urllib.parse
 import json
 import geocoder
 from geopy import distance
@@ -18,6 +19,7 @@ station_status_dict = json.loads(
 
 STATIONS_IN_SF = []
 FREE_EBIKE_STATIONS = []
+
 
 for station in station_information_dict["data"]["stations"]:
     if (
@@ -42,15 +44,14 @@ for station in station_status_dict["data"]["stations"]:
                 temp["coords"] = str(id["lat"]) + ", " + str(id["lon"])
                 FREE_EBIKE_STATIONS.append(temp)
 
-# for name in FREE_EBIKE_STATIONS:
-#     print("http://maps.apple.com/?q=" + name.replace(" ", "+") + "&dirflg=w", "\n")
-
 
 user_geolocation = (geocoder.ip("me")).latlng
 
-# table where column 1 is station name, 2 is distance from me to the station and 3 is button to open apple maps directions to station
 
 for station in FREE_EBIKE_STATIONS:
-    station["distance"] = round(
-        distance.distance(user_geolocation, station["coords"]).miles, 2
-    )
+    station["distance"] = distance.distance(user_geolocation, station["coords"]).miles
+
+    station[
+        "maps_link"
+    ] = f"http://maps.apple.com/?daddr={urllib.parse.quote_plus(station['name'])}&dirflg=w"
+    print(station, "\n")
