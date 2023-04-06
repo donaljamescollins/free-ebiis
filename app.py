@@ -5,6 +5,7 @@ import geocoder
 from geopy import distance
 from flask import Flask, render_template
 from flask_session import Session
+from pydantic import BaseModel
 
 app = Flask(__name__)
 
@@ -61,8 +62,11 @@ def index():
             "maps_link"
         ] = f"http://maps.apple.com/?daddr={urllib.parse.quote_plus(station['name'])}&dirflg=w"
 
+    def get_distance(station):
+        return station["distance"]
+
     return render_template(
         "/index.html",
-        FREE_EBIKE_STATIONS=FREE_EBIKE_STATIONS,
+        FREE_EBIKE_STATIONS=sorted(FREE_EBIKE_STATIONS, key=get_distance),
         user_geolocation=user_geolocation,
     )
