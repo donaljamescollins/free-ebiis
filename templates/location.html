@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Location
+{% endblock %}
+
+{% block main %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Distance</th>
+          <th>Directions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ free_ebike_stations['name'] }}</td>
+          <td>{{ free_ebike_stations['distance'] }} mi</td>
+          <td class="button">
+            <a
+              href="{{ free_ebike_stations['maps_link'] }}"
+              class="btn btn-primary"
+              role="button"
+              >Maps</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}
